@@ -25,6 +25,15 @@ default_copts = select({
     "//conditions:default": [],
 })
 
+# On Windows, boost will by default use auto-linking, hard-coding prefixed .lib
+# filenames in object files. This will break downstream usage since Bazel will
+# compile boost libraries into different .lib names as boost auto-linking 
+# expects. BOOST_ALL_NO_LIB disables auto-linking. 
+default_defines = select({
+    "@boost//:windows": ["BOOST_ALL_NO_LIB"],
+    "//conditions:default": [],
+})
+
 def srcs_list(library_name, exclude):
     return native.glob(
         [p % (library_name,) for p in srcs_patterns],
@@ -49,7 +58,7 @@ def boost_library(
         linkopts = None,
         visibility = ["//visibility:public"]):
     if defines == None:
-        defines = []
+        defines = [] + default_defines
 
     if includes == None:
         includes = []

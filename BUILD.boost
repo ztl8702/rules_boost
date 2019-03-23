@@ -1524,7 +1524,7 @@ boost_library(
     defines = select({
         ":linux_x86_64": [],
         ":osx_x86_64": [],
-        ":windows_x86_64": ["BOOST_ALL_NO_LIB","BOOST_THREAD_USE_LIB", "BOOST_WIN32_THREAD"],
+        ":windows_x86_64": ["BOOST_THREAD_USE_LIB", "BOOST_WIN32_THREAD"],
     })
 )
 
